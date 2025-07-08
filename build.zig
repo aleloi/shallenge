@@ -81,8 +81,11 @@ pub fn build(b: *std.Build) void {
 
             const nvptx_module = nvptx_code.getEmittedAsm();
 
-            exe.addIncludePath(.{ .cwd_relative = "/usr/local/cuda/include" });
-            exe.addLibraryPath(.{ .cwd_relative = "/usr/local/cuda/lib64" });
+            //exe.addIncludePath(.{ .cwd_relative = "/usr/local/cuda/include" });
+             // exe.addLibraryPath(.{ .cwd_relative =
+            //                           "/nix/store/ld6zj1kxzjlk3lrmjj4hvhclamcl79f3-cuda-merged-12.8/lib"
+            // //                          //"/nix/store/xbpwk3xzanxj12157byj6wjagm2wfb3c-cuda-merged-12.8/lib"
+            //                       });
             exe.linkSystemLibrary("cuda");
             exe.root_module.addAnonymousImport("offload-bundle", .{
                 .root_source_file = nvptx_module,

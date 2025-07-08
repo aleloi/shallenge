@@ -4,7 +4,7 @@ const assert = std.debug.assert;
 
 const build_options = @import("build_options");
 
-pub const std_options = .{
+pub const std_options = std.Options {
     .log_level = .info,
 };
 
@@ -64,7 +64,7 @@ inline fn string(seed: Seed) [36]u8 {
     nonce[5] = @truncate('a' + (seed.tid & 0xF));
     nonce[6] = @truncate('a' + ((seed.item >> 4) & 0xF));
     nonce[7] = @truncate('a' + (seed.item & 0xF));
-    return ("snektron/zig+amdgcn+" ++ std.mem.toBytes(ehi) ++ std.mem.toBytes(elo) ++ std.mem.toBytes(nonce)).*;
+    return ("aleloi/zig+nvptx++++" ++ std.mem.toBytes(ehi) ++ std.mem.toBytes(elo) ++ std.mem.toBytes(nonce)).*;
 }
 
 pub fn shallenge(

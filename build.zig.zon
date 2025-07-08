@@ -1,5 +1,6 @@
 .{
-    .name = "shallenge",
+    .name = .shallenge,
+    .fingerprint = 0x7bc9cb20a30c06bf,
     .version = "0.1.0",
     .dependencies = .{
         .hip = .{
