@@ -1,3 +1,9 @@
+## TLDR
+Run with `NIXPKGS_ALLOW_UNFREE=1 nix run github:aleloi/shallenge --impure`
+
+Running on RTX3070 for a few hours is enough for 11 leading zeros and a place on the leaderboard on https://shallenge.quirino.net/
+![](./shallenge.png)
+
 ## Zig, PTX and CUDA
 
 Using the `nvptx64-cuda-none` backend to compile a kernel to PTX, then load it from the CUDA runtime.
@@ -240,3 +246,11 @@ Tue Jul  8 18:49:36 2025
 +-----------------------------------------------------------------------------------------+
 ```
 
+### Nix packaging
+I wanted a runnable flake, not just devenv. Turns out:
+* the zig overlay doesn't work without patching the binary afterwards, because it produces binaries with invalid libc.
+* you need to add `pkgs.autoAddDriverRunpath` to `nativeBuildinputs`, otherwise libcuda.so points to the stub from cudatoolkit.
+* you need to add `ZIG_GLOBAL_CACHE=/writable/directory`; the nix build environment is not writable (?!)
+* zig can't do any network calls during build, so I had to remove the HIP dependency. Now only `-Dgpu-runtime=cuda` works. I made that default.
+
+Otherwise `flake.nix` is pretty straightforward.

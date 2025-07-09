@@ -14,16 +14,46 @@
     };
   in
     {
+      packages.${pkgs.system} = {
+        default = self.packages.${pkgs.system}.shallenge;
+        shallenge = pkgs.stdenv.mkDerivation {
+          pname = "shallenge";
+          version = "0.1.0";
+          src = ./.;
+
+          nativeBuildInputs = [
+            pkgs.zig
+            pkgs.pkg-config
+            pkgs.cudaPackages.cudatoolkit
+            pkgs.autoAddDriverRunpath
+          ];
+
+           buildPhase = "
+          ZIG_GLOBAL_CACHE_DIR=/tmp/ zig build --verbose -Dgpu-runtime=cuda -Doptimize=ReleaseFast
+          ";
+
+          installPhase = "
+          mkdir -p $out/bin
+          cp zig-out/bin/shallenge $out/bin/
+          echo
+          echo installed in $out
+          echo
+          ";
+
+          meta = with pkgs.lib; {
+            description = "SHAllenge solver in Zig+nvptx, original by Snektron";
+            license = licenses.mit;
+            platforms = platforms.unix;
+          };
+        };
+      };
+      
       devShell.x86_64-linux = pkgs.mkShell {
         nativeBuildInputs = [
           zig-overlay.packages."x86_64-linux"."0.14.1"
           pkgs.pkg-config
           pkgs.cudaPackages.cudatoolkit
         ];
-        shellHook = ''
-        export TERM=xterm
-        export EDITOR="emacs -nw"
-        '';
       };
     };
 }

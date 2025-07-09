@@ -10,7 +10,7 @@ pub fn build(b: *std.Build) void {
     const host_target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const runtime = b.option(GpuRuntime, "gpu-runtime", "GPU runtime to use (hip or cuda)") orelse .hip;
+    const runtime = b.option(GpuRuntime, "gpu-runtime", "GPU runtime to use (hip or cuda)") orelse .cuda;
 
     const opts = b.addOptions();
     opts.addOption(GpuRuntime, "gpu_runtime", runtime);

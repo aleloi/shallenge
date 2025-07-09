@@ -1,3 +1,4 @@
+// info: string: aleloi/zig+nvptx++++gflikoekgicjhikp
 const std = @import("std");
 const Hash = std.crypto.hash.sha2.Sha256;
 const assert = std.debug.assert;
@@ -13,9 +14,9 @@ const hip = switch (build_options.gpu_runtime) {
     .cuda => @import("cuda.zig"),
 };
 
-const block_size = 256;
+const block_size = 512;
 const grid_size = 65536;
-const items_per_thread = 256;
+const items_per_thread = 128;
 
 const Seed = struct {
     bid: u16,
